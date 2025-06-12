@@ -11,7 +11,7 @@ export async function registerApiRoutes(app: express.Express) {
   await storage.connect();
 
   // Users API
-  app.get("/api/users", async (req, res) => {
+  app.get("/api/users", async (req: any, res: any) => {
     try {
       const users = await storage.getUsers();
       res.json(users);
@@ -20,7 +20,7 @@ export async function registerApiRoutes(app: express.Express) {
     }
   });
 
-  app.post("/api/users", async (req, res) => {
+  app.post("/api/users", async (req: any, res: any) => {
     try {
       const user = await storage.createUser(req.body);
       res.status(201).json(user);
@@ -29,32 +29,8 @@ export async function registerApiRoutes(app: express.Express) {
     }
   });
 
-  app.put("/api/users/:id", async (req: any, res: any) => {
-    try {
-      const user = await storage.updateUser(req.params.id, req.body);
-      if (!user) {
-        return res.status(404).json({ message: "User not found" });
-      }
-      res.json(user);
-    } catch (error) {
-      res.status(500).json({ message: "Failed to update user" });
-    }
-  });
-
-  app.delete("/api/users/:id", async (req: any, res: any) => {
-    try {
-      const success = await storage.deleteUser(req.params.id);
-      if (!success) {
-        return res.status(404).json({ message: "User not found" });
-      }
-      res.status(204).send();
-    } catch (error) {
-      res.status(500).json({ message: "Failed to delete user" });
-    }
-  });
-
   // Agencies API
-  app.get("/api/agencies", async (req, res) => {
+  app.get("/api/agencies", async (req: any, res: any) => {
     try {
       const agencies = await storage.getAgencies();
       res.json(agencies);
@@ -63,7 +39,7 @@ export async function registerApiRoutes(app: express.Express) {
     }
   });
 
-  app.post("/api/agencies", async (req, res) => {
+  app.post("/api/agencies", async (req: any, res: any) => {
     try {
       const agency = await storage.createAgency(req.body);
       res.status(201).json(agency);
@@ -73,7 +49,7 @@ export async function registerApiRoutes(app: express.Express) {
   });
 
   // Roles API
-  app.get("/api/roles", async (req, res) => {
+  app.get("/api/roles", async (req: any, res: any) => {
     try {
       const roles = await storage.getRoles();
       res.json(roles);
@@ -82,7 +58,7 @@ export async function registerApiRoutes(app: express.Express) {
     }
   });
 
-  app.post("/api/roles", async (req, res) => {
+  app.post("/api/roles", async (req: any, res: any) => {
     try {
       const role = await storage.createRole(req.body);
       res.status(201).json(role);
@@ -92,7 +68,7 @@ export async function registerApiRoutes(app: express.Express) {
   });
 
   // Teams API
-  app.get("/api/teams", async (req, res) => {
+  app.get("/api/teams", async (req: any, res: any) => {
     try {
       const teams = await storage.getTeams();
       res.json(teams);
@@ -101,7 +77,7 @@ export async function registerApiRoutes(app: express.Express) {
     }
   });
 
-  app.post("/api/teams", async (req, res) => {
+  app.post("/api/teams", async (req: any, res: any) => {
     try {
       const team = await storage.createTeam(req.body);
       res.status(201).json(team);

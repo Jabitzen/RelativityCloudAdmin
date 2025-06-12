@@ -14,7 +14,7 @@ function log(message: string, source = "express") {
 async function setupVite(app: express.Express, server: any) {
   // Simple static file serving for development
   app.use(express.static("client"));
-  app.get("*", (req, res) => {
+  app.get("/", (req, res) => {
     res.sendFile(require("path").join(process.cwd(), "client", "index.html"));
   });
 }
