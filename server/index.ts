@@ -1,11 +1,35 @@
 import express, { type Request, Response, NextFunction } from "express";
 import { registerApiRoutes } from "./simple-api-routes";
-import { setupVite, serveStatic, log } from "./vite";
+
+function log(message: string, source = "express") {
+  const formattedTime = new Date().toLocaleTimeString("en-US", {
+    hour: "numeric",
+    minute: "2-digit",
+    second: "2-digit",
+    hour12: true,
+  });
+  console.log(`${formattedTime} [${source}] ${message}`);
+}
+
+async function setupVite(app: express.Express, server: any) {
+  // Simple static file serving for development
+  app.use(express.static("client"));
+  app.get("*", (req, res) => {
+    res.sendFile(require("path").join(process.cwd(), "client", "index.html"));
+  });
+}
+
+function serveStatic(app: express.Express) {
+  app.use(express.static("client/dist"));
+  app.get("*", (req, res) => {
+    res.sendFile(require("path").join(process.cwd(), "client", "dist", "index.html"));
+  });
+}
 
 const app = express();
 
 // Add CORS headers to allow browser requests
-app.use((req, res, next) => {
+app.use((req: Request, res: Response, next: NextFunction) => {
   res.header('Access-Control-Allow-Origin', '*');
   res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
   res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');

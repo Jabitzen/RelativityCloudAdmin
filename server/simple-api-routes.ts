@@ -29,7 +29,7 @@ export async function registerApiRoutes(app: express.Express) {
     }
   });
 
-  app.put("/api/users/:id", async (req, res) => {
+  app.put("/api/users/:id", async (req: any, res: any) => {
     try {
       const user = await storage.updateUser(req.params.id, req.body);
       if (!user) {
@@ -41,7 +41,7 @@ export async function registerApiRoutes(app: express.Express) {
     }
   });
 
-  app.delete("/api/users/:id", async (req, res) => {
+  app.delete("/api/users/:id", async (req: any, res: any) => {
     try {
       const success = await storage.deleteUser(req.params.id);
       if (!success) {
