@@ -1,0 +1,102 @@
+import { IStorage } from './storage-interface';
+import { User, InsertUser, Agency, InsertAgency, Role, InsertRole, Permission, InsertPermission, Workflow, InsertWorkflow, WorkflowInstance, InsertWorkflowInstance, Application, InsertApplication, ActivityLog, Resource, InsertResource, Action, InsertAction, ResourceAction, InsertResourceAction, Team, InsertTeam, TeamMember, InsertTeamMember, Person, InsertPerson } from '../shared/schema';
+import session from 'express-session';
+export declare class MongoDBStorage implements IStorage {
+    sessionStore: session.Store;
+    constructor();
+    getUser(id: number): Promise<User | undefined>;
+    getUserByUsername(username: string): Promise<User | undefined>;
+    getUserByEmail(email: string): Promise<User | undefined>;
+    getUsers(): Promise<User[]>;
+    getUsersWithAgencies(): Promise<any[]>;
+    createUser(user: InsertUser): Promise<User>;
+    updateUser(id: number, data: Partial<User>): Promise<User>;
+    deleteUser(id: number): Promise<void>;
+    getUserCount(): Promise<number>;
+    getAgency(id: number): Promise<Agency | undefined>;
+    getAgencies(): Promise<Agency[]>;
+    createAgency(agency: InsertAgency): Promise<Agency>;
+    deleteAgency(id: number): Promise<void>;
+    updateAgency(id: number, data: Partial<Agency>): Promise<Agency>;
+    getRole(id: number): Promise<Role | undefined>;
+    getRoles(): Promise<Role[]>;
+    createRole(role: InsertRole): Promise<Role>;
+    getPermission(id: number): Promise<Permission | undefined>;
+    getPermissions(): Promise<Permission[]>;
+    createPermission(permission: InsertPermission): Promise<Permission>;
+    assignPermissionToRole(roleId: number, permissionId: number): Promise<{
+        id: number;
+        roleId: number;
+        permissionId: number;
+    }>;
+    removePermissionFromRole(roleId: number, permissionId: number): Promise<void>;
+    getRolePermissions(roleId: number): Promise<Permission[]>;
+    assignRoleToUser(userId: number, roleId: number): Promise<{
+        id: number;
+        userId: number;
+        roleId: number;
+    }>;
+    removeRoleFromUser(userId: number, roleId: number): Promise<void>;
+    getUserRoles(userId: number): Promise<Role[]>;
+    setUserPermission(userId: number, permissionId: number, granted: boolean): Promise<{
+        id: number;
+        userId: number;
+        permissionId: number;
+        granted: boolean;
+    }>;
+    removeUserPermission(userId: number, permissionId: number): Promise<void>;
+    getUserPermissions(userId: number): Promise<{
+        permission: Permission;
+        granted: boolean;
+    }[]>;
+    userHasPermission(userId: number, resource: string, action: string): Promise<boolean>;
+    getWorkflow(id: number): Promise<Workflow | undefined>;
+    getWorkflows(): Promise<Workflow[]>;
+    createWorkflow(workflow: InsertWorkflow): Promise<Workflow>;
+    getWorkflowInstance(id: number): Promise<WorkflowInstance | undefined>;
+    getWorkflowInstances(status?: string): Promise<WorkflowInstance[]>;
+    createWorkflowInstance(instance: InsertWorkflowInstance): Promise<WorkflowInstance>;
+    approveWorkflowStep(instanceId: number, approverId: number, comment?: string): Promise<WorkflowInstance>;
+    rejectWorkflowStep(instanceId: number, approverId: number, comment?: string): Promise<WorkflowInstance>;
+    getPendingWorkflowCount(): Promise<number>;
+    getPendingWorkflowInstances(limit?: number): Promise<WorkflowInstance[]>;
+    getApplication(id: number): Promise<Application | undefined>;
+    getApplications(): Promise<Application[]>;
+    createApplication(application: InsertApplication): Promise<Application>;
+    assignApplicationToAgency(agencyId: number, applicationId: number, licenseKey?: string, seats?: number, expiresAt?: Date): Promise<object>;
+    getActiveApplicationCount(): Promise<number>;
+    getLicenseUsagePercentage(): Promise<number>;
+    getConnectedApplications(): Promise<any[]>;
+    createActivityLog(log: Partial<ActivityLog>): Promise<ActivityLog>;
+    getActivityLogs(limit?: number): Promise<ActivityLog[]>;
+    getRecentActivityLogs(limit?: number): Promise<ActivityLog[]>;
+    getResources(): Promise<Resource[]>;
+    createResource(resource: InsertResource): Promise<Resource>;
+    getResourceByName(name: string): Promise<Resource | undefined>;
+    getActions(): Promise<Action[]>;
+    createAction(action: InsertAction): Promise<Action>;
+    getActionByName(name: string): Promise<Action | undefined>;
+    createResourceAction(resourceAction: InsertResourceAction): Promise<ResourceAction>;
+    getTeams(): Promise<Team[]>;
+    getTeam(id: number): Promise<Team | undefined>;
+    createTeam(team: InsertTeam): Promise<Team>;
+    updateTeam(id: number, data: Partial<Team>): Promise<Team>;
+    deleteTeam(id: number): Promise<void>;
+    getTeamMembers(teamId: number): Promise<(TeamMember & {
+        user: User;
+    })[]>;
+    addTeamMember(teamMember: InsertTeamMember): Promise<TeamMember>;
+    removeTeamMember(teamId: number, userId: number): Promise<void>;
+    updateTeamMemberRole(teamId: number, userId: number, role: string): Promise<TeamMember>;
+    getUserTeams(userId: number): Promise<(TeamMember & {
+        team: Team;
+    })[]>;
+    getPersons(agencyId: string): Promise<Person[]>;
+    getPerson(id: number, agencyId: string): Promise<Person | undefined>;
+    createPerson(person: InsertPerson): Promise<Person>;
+    updatePerson(id: number, data: Partial<Person>, agencyId: string): Promise<Person>;
+    deletePerson(id: number, agencyId: string): Promise<void>;
+    searchPersons(query: string, agencyId: string): Promise<Person[]>;
+}
+export declare const storage: MongoDBStorage;
+//# sourceMappingURL=mongodb-storage.d.ts.map
