@@ -12,10 +12,55 @@ function log(message: string, source = "express") {
 }
 
 async function setupVite(app: express.Express, server: any) {
-  // Simple static file serving for development
-  app.use(express.static("client"));
-  app.get("/", (req, res) => {
-    res.sendFile(require("path").join(process.cwd(), "client", "index.html"));
+  const { createServer: createViteServer } = require("vite");
+  const path = require("path");
+  
+  // Create Vite server in middleware mode
+  const vite = await createViteServer({
+    server: { middlewareMode: true },
+    appType: 'custom',
+    root: './client',
+    configFile: false,
+    plugins: [
+      require('@vitejs/plugin-react')()
+    ],
+    resolve: {
+      alias: {
+        '@': path.resolve(process.cwd(), './client/src'),
+        '@shared': path.resolve(process.cwd(), './shared'),
+      },
+    },
+  });
+
+  app.use(vite.middlewares);
+
+  // Handle specific routes instead of catch-all
+  app.get('/', async (req, res, next) => {
+    try {
+      let template = require('fs').readFileSync(
+        path.resolve(process.cwd(), 'client/index.html'),
+        'utf-8'
+      );
+      template = await vite.transformIndexHtml(req.originalUrl, template);
+      res.status(200).set({ 'Content-Type': 'text/html' }).end(template);
+    } catch (e) {
+      vite.ssrFixStacktrace(e);
+      next(e);
+    }
+  });
+
+  app.get('/users', async (req, res, next) => {
+    try {
+      let template = require('fs').readFileSync(
+        path.resolve(process.cwd(), 'client/index.html'),
+        'utf-8'
+      );
+      template = await vite.transformIndexHtml(req.originalUrl, template);
+      res.status(200).set({ 'Content-Type': 'text/html' }).end(template);
+    } catch (e) {
+      vite.ssrFixStacktrace(e);
+      next(e);
+    }
   });
 }
 
