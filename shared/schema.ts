@@ -4,46 +4,39 @@ import { createInsertSchema } from 'drizzle-zod';
 // Users table
 export const users = pgTable('users', {
   id: serial('id').primaryKey(),
-  username: varchar('username', { length: 100 }).notNull().unique(),
-  email: varchar('email', { length: 255 }).notNull().unique(),
-  firstName: varchar('first_name', { length: 100 }).notNull(),
-  lastName: varchar('last_name', { length: 100 }).notNull(),
-  role: varchar('role', { length: 50 }).notNull(),
+  username: text('username').notNull(),
+  email: text('email').notNull(),
+  firstName: text('first_name').notNull(),
+  lastName: text('last_name').notNull(),
+  role: text('role').notNull(),
   isActive: boolean('is_active').default(true).notNull(),
   agencyId: integer('agency_id'),
-  createdAt: timestamp('created_at').defaultNow().notNull(),
-  updatedAt: timestamp('updated_at').defaultNow().notNull(),
 });
 
 // Agencies table
 export const agencies = pgTable('agencies', {
   id: serial('id').primaryKey(),
-  name: varchar('name', { length: 255 }).notNull(),
-  code: varchar('code', { length: 50 }).notNull().unique(),
-  type: varchar('type', { length: 100 }).notNull(),
-  status: varchar('status', { length: 50 }).default('active').notNull(),
+  name: text('name').notNull(),
+  type: text('type').notNull(),
+  status: text('status').default('active').notNull(),
   description: text('description'),
-  createdAt: timestamp('created_at').defaultNow().notNull(),
-  updatedAt: timestamp('updated_at').defaultNow().notNull(),
+  isActive: boolean('is_active').default(true).notNull(),
+  createdAt: timestamp('created_at').defaultNow(),
 });
 
 // Roles table
 export const roles = pgTable('roles', {
   id: serial('id').primaryKey(),
-  name: varchar('name', { length: 100 }).notNull().unique(),
+  name: text('name').notNull(),
   description: text('description'),
-  createdAt: timestamp('created_at').defaultNow().notNull(),
-  updatedAt: timestamp('updated_at').defaultNow().notNull(),
 });
 
 // Teams table
 export const teams = pgTable('teams', {
   id: serial('id').primaryKey(),
-  name: varchar('name', { length: 255 }).notNull(),
+  name: text('name').notNull(),
   description: text('description'),
   agencyId: integer('agency_id').notNull(),
-  createdAt: timestamp('created_at').defaultNow().notNull(),
-  updatedAt: timestamp('updated_at').defaultNow().notNull(),
 });
 
 // Types
