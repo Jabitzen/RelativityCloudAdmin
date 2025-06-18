@@ -1,8 +1,8 @@
 import express from "express";
 import { createServer } from "http";
-import { MongoDBStorage } from "./mongodb-storage";
+import { PostgreSQLStorage } from "./storage";
 
-const storage = new MongoDBStorage();
+const storage = new PostgreSQLStorage();
 
 export async function registerApiRoutes(app: express.Express) {
   const server = createServer(app);
