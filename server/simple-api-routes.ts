@@ -11,7 +11,7 @@ export async function registerApiRoutes(app: express.Express) {
   await storage.connect();
 
   // Users API
-  app.get("/api/users", async (req: any, res: any) => {
+  app.get("/api/users", async (_req: any, res: any) => {
     try {
       const users = await storage.getUsers();
       res.json(users);
@@ -30,7 +30,7 @@ export async function registerApiRoutes(app: express.Express) {
   });
 
   // Agencies API
-  app.get("/api/agencies", async (req: any, res: any) => {
+  app.get("/api/agencies", async (_req: any, res: any) => {
     try {
       const agencies = await storage.getAgencies();
       res.json(agencies);
@@ -49,7 +49,7 @@ export async function registerApiRoutes(app: express.Express) {
   });
 
   // Roles API
-  app.get("/api/roles", async (req: any, res: any) => {
+  app.get("/api/roles", async (_req: any, res: any) => {
     try {
       const roles = await storage.getRoles();
       res.json(roles);
@@ -68,7 +68,7 @@ export async function registerApiRoutes(app: express.Express) {
   });
 
   // Teams API
-  app.get("/api/teams", async (req: any, res: any) => {
+  app.get("/api/teams", async (_req: any, res: any) => {
     try {
       const teams = await storage.getTeams();
       res.json(teams);
