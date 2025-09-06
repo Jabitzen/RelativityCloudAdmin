@@ -11,13 +11,17 @@ function log(message: string, source = "express") {
   console.log(`${formattedTime} [${source}] ${message}`);
 }
 
-async function setupVite(app: express.Express, server: any) {
+async function setupVite(app: express.Express) {
   const { createServer: createViteServer } = require("vite");
   const path = require("path");
   
   // Create Vite server in middleware mode
   const vite = await createViteServer({
-    server: { middlewareMode: true },
+    server: { 
+      middlewareMode: true,
+      host: '0.0.0.0',
+      allowedHosts: 'all'
+    },
     appType: 'custom',
     root: './client',
     configFile: false,
@@ -66,7 +70,7 @@ async function setupVite(app: express.Express, server: any) {
 
 function serveStatic(app: express.Express) {
   app.use(express.static("client/dist"));
-  app.get("*", (req, res) => {
+  app.get("*", (_req, res) => {
     res.sendFile(require("path").join(process.cwd(), "client", "dist", "index.html"));
   });
 }
@@ -134,7 +138,7 @@ app.use((req, res, next) => {
   // setting up all the other routes so the catch-all route
   // doesn't interfere with the other routes
   if (app.get("env") === "development") {
-    await setupVite(app, server);
+    await setupVite(app);
   } else {
     serveStatic(app);
   }
