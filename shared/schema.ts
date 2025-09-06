@@ -10,7 +10,7 @@ export const users = pgTable('users', {
   lastName: text('last_name').notNull(),
   role: text('role').notNull(),
   isActive: boolean('is_active').default(true).notNull(),
-  agencyId: integer('agency_id'),
+  agencyId: integer('agency_id').default(null),
 });
 
 // Agencies table
