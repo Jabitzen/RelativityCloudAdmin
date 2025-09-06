@@ -20,20 +20,16 @@ async function setupVite(app: express.Express) {
     server: { 
       middlewareMode: true,
       host: '0.0.0.0',
-      allowedHosts: 'all'
+      allowedHosts: [
+        '8865a5ca-c050-42d8-a9a0-b57ce8801082-00-1072s6kzzp6tz.janeway.replit.dev',
+        'localhost',
+        '127.0.0.1',
+        '0.0.0.0'
+      ]
     },
     appType: 'custom',
     root: './client',
-    configFile: false,
-    plugins: [
-      require('@vitejs/plugin-react')()
-    ],
-    resolve: {
-      alias: {
-        '@': path.resolve(process.cwd(), './client/src'),
-        '@shared': path.resolve(process.cwd(), './shared'),
-      },
-    },
+    configFile: './vite.config.js'
   });
 
   app.use(vite.middlewares);
