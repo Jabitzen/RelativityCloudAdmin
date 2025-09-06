@@ -1,8 +1,8 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { useState, useEffect } from "react";
-import { insertUserSchema, type User, type NewUser } from "@shared/schema";
+import { useEffect } from "react";
+import { insertUserSchema, type User } from "@shared/schema";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
@@ -33,12 +33,14 @@ import {
 } from "@/components/ui/select";
 
 // Form schema with custom validation
-const userFormSchema = insertUserSchema.omit({ id: true }).extend({
+const userFormSchema = z.object({
   username: z.string().min(3, "Username must be at least 3 characters"),
   email: z.string().email("Please enter a valid email address"),
   firstName: z.string().min(1, "First name is required"),
   lastName: z.string().min(1, "Last name is required"),
   role: z.string().min(1, "Role is required"),
+  isActive: z.boolean().default(true),
+  agencyId: z.number().optional(),
 });
 
 type UserFormData = z.infer<typeof userFormSchema>;

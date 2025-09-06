@@ -46,6 +46,10 @@ const FormField = ({ ...props }: any) => {
   );
 };
 
+const Form = ({ children, ...props }: any) => {
+  return <form {...props}>{children}</form>;
+};
+
 const FormItem = forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
   ({ className, ...props }, ref) => {
     const id = useId();
@@ -134,6 +138,7 @@ const FormMessage = forwardRef<HTMLParagraphElement, React.HTMLAttributes<HTMLPa
 
 export {
   useFormField,
+  Form,
   FormField,
   FormItem,
   FormLabel,

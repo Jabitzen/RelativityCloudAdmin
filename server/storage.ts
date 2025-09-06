@@ -67,7 +67,7 @@ export class PostgreSQLStorage implements IStorage {
   async updateUser(id: number, updates: Partial<NewUser>): Promise<User | null> {
     const [user] = await this.db
       .update(users)
-      .set({ ...updates, updatedAt: new Date() })
+      .set(updates)
       .where(eq(users.id, id))
       .returning();
     return user || null;
